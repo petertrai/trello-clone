@@ -83,7 +83,7 @@ function Board() {
             id: finishCol.id,
             todos: finishTodos,
         });
-        
+
         updateTodoInDB(todoMoved, finishCol.id)
 
         setBoardState({ ...board, columns: newColumns})

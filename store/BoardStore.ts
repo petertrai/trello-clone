@@ -7,9 +7,16 @@ interface BoardState {
     getBoard: () => void;
     setBoardState: (board: Board) => void;
     updateTodoInDB: (todo: Todo, columnId: TypedColumn) => void;
+    newTaskInput: string;
+    newTaskType: TypedColumn;
 
     searchString: string;
     setSearchString: (searchString: string) => void;
+
+    // deleteTask: (taskIndex: number, todoId: Todo, id: TypedColumn) => void;
+
+    setNewTaskInput: (input: string) => void;
+    setNewTaskType: (columnId: TypedColumn) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -17,6 +24,9 @@ export const useBoardStore = create<BoardState>((set) => ({
     columns: new Map<TypedColumn, Column>()
   },
   searchString: "",
+  newTaskInput: "",
+  newTaskType: "todo",
+
   setSearchString: (searchString) => set({ searchString }),
   
   getBoard: async() => {
@@ -24,7 +34,27 @@ export const useBoardStore = create<BoardState>((set) => ({
     set({ board })
   },
 
+  // deleteTask: async (taskIndex: number, todo: Todo, id: TypedColumn) => {
+  //   const newColumns = new Map(get().board.columns)
+  //   newColumns.get(id)?.todos.splice(taskIndex, 1);
+
+  //   set({ board: { columns: newColumns } });
+
+  //   if (todo.image) {
+  //     await storage.deleteFile(todo.image.bucketId, todo.image.fileId);
+  //   }
+
+  //   await databases.deleteDocument(
+  //     process.env.NEXT_PUBLIC_DATABASE_ID!,
+  //     process.env.NEXT_PUBLIC_COLLECTION_ID!,
+  //     todo.$id
+  //   );
+  // },
+
   setBoardState: (board) => set({board}),
+
+  setNewTaskInput: (input: string) => set({ newTaskInput: input }),
+  setNewTaskType: (columnId: TypedColumn) => set({ newTaskType: columnId }),
 
   updateTodoInDB: async(todo, columnId) => {
     await databases.updateDocument(
